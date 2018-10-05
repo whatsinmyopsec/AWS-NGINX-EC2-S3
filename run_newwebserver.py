@@ -17,7 +17,7 @@ def create_instance():
     # try/except so the script will not crash
     try:
         instance = ec2.create_instances(
-            ImageId='ami-acd005d5',
+            ImageId='ami-047bb4163c506cd98',
             MinCount=1,
             MaxCount=1,
             InstanceType='t2.micro',
@@ -27,7 +27,7 @@ def create_instance():
             # UserData that will be executed on creation of the instance
             UserData='''#!/bin/bash
                       yum -y update
-                      yum -y install python35
+                      yum -y install python37
                       yum -y install nginx
                       service nginx start
                       chkconfig nginx on
