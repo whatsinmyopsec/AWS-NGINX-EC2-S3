@@ -1,6 +1,7 @@
-import boto3
-import time
 import subprocess
+import time
+
+import boto3
 
 # Declaring EC2 variable
 ec2 = boto3.resource('ec2')
@@ -20,9 +21,9 @@ def create_instance():
             MinCount=1,
             MaxCount=1,
             InstanceType='t2.micro',
-            KeyName='coady91',
+            KeyName='',
             TagSpecifications=tag_spec,
-            SecurityGroupIds=['sg-9e143de6'],
+            SecurityGroupIds=[''],
             # UserData that will be executed on creation of the instance
             UserData='''#!/bin/bash
                       yum -y update
@@ -38,13 +39,13 @@ def create_instance():
         print("Public IP address:", instance[0].public_ip_address)
 
         # Suppress the new host key confirmation prompt and allow SSH remote command execution
-        cmd = "ssh -o StrictHostKeyChecking=no -i coady91.pem ec2-user@" + instance[0].public_ip_address + " 'pwd'"
+        cmd = "ssh -o StrictHostKeyChecking=no -i <pemfile> ec2-user@" + instance[0].public_ip_address + " 'pwd'"
         time.sleep(60)
         (status, output) = subprocess.getstatusoutput(cmd)
         print(output)
 
         # SCP the check_webserver.py file to the instance
-        cmd_scp = "scp -i coady91.pem /home/coady/devops-assignment/check_webserver.py ec2-user@" + instance[
+        cmd_scp = "scp -i <pemfile> ~/PycharmProjects/devops-assign-1/check_webserver.py ec2-user@" + instance[
             0].public_ip_address + ":."
         (status, output) = subprocess.getstatusoutput(cmd_scp)
         print(output)
