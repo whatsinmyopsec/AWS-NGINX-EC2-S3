@@ -24,7 +24,7 @@ def add_file():
             print(instance.id, instance.state, instance.public_ip_address)
 
         cmd = " 'echo \"<img src=" + file_url + " />\" | sudo tee -a  /usr/share/nginx/html/index.html' "
-        index = "ssh -i <pemfile> ec2-user@" + instance.public_ip_address + ' ' + cmd
+        index = "ssh -i devops.pem ec2-user@" + instance.public_ip_address + ' ' + cmd
 
         (status, output) = subprocess.getstatusoutput(index)
         print(output)

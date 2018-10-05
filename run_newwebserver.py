@@ -39,13 +39,13 @@ def create_instance():
         print("Public IP address:", instance[0].public_ip_address)
 
         # Suppress the new host key confirmation prompt and allow SSH remote command execution
-        cmd = "ssh -o StrictHostKeyChecking=no -i <pemfile> ec2-user@" + instance[0].public_ip_address + " 'pwd'"
+        cmd = "ssh -o StrictHostKeyChecking=no -i devops.pem ec2-user@" + instance[0].public_ip_address + " 'pwd'"
         time.sleep(60)
         (status, output) = subprocess.getstatusoutput(cmd)
         print(output)
 
         # SCP the check_webserver.py file to the instance
-        cmd_scp = "scp -i <pemfile> ~/PycharmProjects/devops-assign-1/check_webserver.py ec2-user@" + instance[
+        cmd_scp = "scp -i devops.pem ~/PycharmProjects/devops-assign-1/check_webserver.py ec2-user@" + instance[
             0].public_ip_address + ":."
         (status, output) = subprocess.getstatusoutput(cmd_scp)
         print(output)
