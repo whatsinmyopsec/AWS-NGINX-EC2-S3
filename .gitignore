@@ -105,3 +105,6 @@ venv.bak/
 
 # pem file
 .pem
+
+# idea
+.idea
