@@ -21,14 +21,14 @@ def create_instance():
             MinCount=1,
             MaxCount=1,
             InstanceType='t2.micro',
-            KeyName='',
+            KeyName='devops',
             TagSpecifications=tag_spec,
-            SecurityGroupIds=[''],
+            SecurityGroupIds=['sg-0d2d781ed4f0610db'],
             # UserData that will be executed on creation of the instance
             UserData='''#!/bin/bash
                       yum -y update
-                      yum -y install python37
-                      yum -y install nginx
+                      yum -y install python3
+                      yum -y install nginx1.12
                       service nginx start
                       chkconfig nginx on
                       touch home/ec2-user/testFile''')

@@ -1,7 +1,6 @@
 # Text menu in Python
 
 import os
-# Using subprocess module to execute a command http://www.sharats.me/posts/the-ever-useful-and-neat-subprocess-module/
 import subprocess
 
 
