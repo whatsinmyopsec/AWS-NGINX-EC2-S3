@@ -28,9 +28,9 @@ def create_instance():
             UserData='''#!/bin/bash
                      sudo yum -y update
                      sudo yum -y install python36
-                     sudo yum -y install nginx1.12
-                     sudo service nginx start
-                     sudo chkconfig nginx on
+                     yum -y install nginx1.12
+                     service nginx start
+                     chkconfig nginx on
                       touch home/ec2-user/testFile''')
 
         print("An EC2 instance with ID", instance[0].id, "has been created.")
