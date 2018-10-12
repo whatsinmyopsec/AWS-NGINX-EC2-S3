@@ -12,7 +12,7 @@ try:
 
     cmd = "ssh -i devops.pem ec2-user@" + instance.public_ip_address + " 'python3 check_webserver.py'"
 
-    (status, output) = subprocess.getstatusoutput(cmd)
+    (status, output) = subprocess.run(cmd, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     print(output)
 
 except Exception as error:

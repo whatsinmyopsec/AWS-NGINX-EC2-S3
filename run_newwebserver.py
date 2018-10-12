@@ -26,11 +26,11 @@ def create_instance():
             SecurityGroupIds=['sg-0d2d781ed4f0610db'],
             # UserData that will be executed on creation of the instance
             UserData='''#!/bin/bash
-                      yum -y update
-                      yum -y install python3
-                      yum -y install nginx1.12
-                      service nginx start
-                      chkconfig nginx on
+                     sudo yum -y update
+                     sudo yum -y install python36
+                     sudo yum -y install nginx1.12
+                     sudo service nginx start
+                     sudo chkconfig nginx on
                       touch home/ec2-user/testFile''')
 
         print("An EC2 instance with ID", instance[0].id, "has been created.")
@@ -41,13 +41,14 @@ def create_instance():
         # Suppress the new host key confirmation prompt and allow SSH remote command execution
         cmd = "ssh -o StrictHostKeyChecking=no -i devops.pem ec2-user@" + instance[0].public_ip_address + " 'pwd'"
         time.sleep(60)
-        (status, output) = subprocess.getstatusoutput(cmd)
+        (status, output) = subprocess.run(cmd, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         print(output)
 
         # SCP the check_webserver.py file to the instance
         cmd_scp = "scp -i devops.pem ~/PycharmProjects/devops-assign-1/check_webserver.py ec2-user@" + instance[
             0].public_ip_address + ":."
-        (status, output) = subprocess.getstatusoutput(cmd_scp)
+        (status, output) = subprocess.run(cmd_scp, check=True, shell=True, stdout=subprocess.PIPE,
+                                          stderr=subprocess.PIPE)
         print(output)
 
     except Exception as error:

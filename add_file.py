@@ -26,7 +26,7 @@ def add_file():
         cmd = " 'echo \"<img src=" + file_url + " />\" | sudo tee -a  /usr/share/nginx/html/index.html' "
         index = "ssh -i devops.pem ec2-user@" + instance.public_ip_address + ' ' + cmd
 
-        (status, output) = subprocess.getstatusoutput(index)
+        (status, output) = subprocess.run(index, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         print(output)
 
     except Exception as error:
