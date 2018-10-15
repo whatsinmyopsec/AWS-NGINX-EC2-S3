@@ -4,32 +4,22 @@ Try running this program from the command line like this:
 """
 
 import subprocess
-import sys
 
 
-def startnginx():
-    cmd = 'ps -A | grep nginx | grep -v grep'
+def checknginx():
+    try:
+        cmd = 'ps -A | grep nginx'
 
-    (status, output) = subprocess.run(cmd, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        subprocess.run(cmd, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print("Nginx Server IS running")
 
-    if status == 0:
-        print("Nginx server is already running")
-        sys.exit(1)
-    else:
-        sys.stderr.write(output)
-        print("Nginx Server not running, so let's try to start it now...")
-        cmd = 'sudo service nginx start'
-        (status, output) = subprocess.run(cmd, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if status:
-            print("--- Error starting nginx! ---")
-            sys.exit(2)
-        print("Nginx started successfully")
-        sys.exit(0)
+    except subprocess.CalledProcessError:
+        print("Nginx Server IS NOT running")
 
 
 # Define a main() function.
 def main():
-    startnginx()
+    checknginx()
 
 
 # This is the standard boilerplate that calls the main() function.
