@@ -21,9 +21,9 @@ def create_instance():
             MinCount=1,
             MaxCount=1,
             InstanceType='t2.micro',
-            KeyName='devops',
+            KeyName='devops',  # replace with your key
             TagSpecifications=tag_spec,
-            SecurityGroupIds=['sg-0d2d781ed4f0610db'],
+            SecurityGroupIds=['sg-0d2d781ed4f0610db'],  # replace with your security group
             # UserData that will be executed on creation of the instance
             UserData='''#!/bin/bash
                      yum -y update

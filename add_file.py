@@ -19,15 +19,18 @@ def add_file():
     file = input('\nPlease type in the name of the file you wish to copy to the Index page: ')
     file_url = "https://s3-eu-west-1.amazonaws.com/" + bucket + "/" + file
 
+    # Indentation matters
+
     try:
         for instance in ec2.instances.all():
             print(instance.id, instance.state, instance.public_ip_address)
 
-        cmd = " 'echo \"<img src=" + file_url + " />\" | sudo tee -a  /usr/share/nginx/html/index.html' "
-        index = "ssh -i devops.pem ec2-user@" + instance.public_ip_address + ' ' + cmd
+            cmd = " 'echo \"<img src=" + file_url + " />\" | sudo tee -a  /usr/share/nginx/html/index.html' "
+            index = "ssh -i devops.pem ec2-user@" + instance.public_ip_address + ' ' + cmd
 
-        (status, output) = subprocess.run(index, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print(output)
+            (status, output) = subprocess.run(index, check=True, shell=True, stdout=subprocess.PIPE,
+                                              stderr=subprocess.PIPE)
+            print(output)
 
     except Exception as error:
         print(error)
