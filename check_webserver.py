@@ -5,6 +5,7 @@ Try running this program from the command line like this:
 
 import subprocess
 
+
 def checknginx():
     try:
         cmd = 'ps -A | grep nginx'

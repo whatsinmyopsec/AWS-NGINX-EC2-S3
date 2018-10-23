@@ -14,13 +14,10 @@ def create_bucket():
 
     # try/except so the script will not crash
     try:
-        response = s3.create_bucket(Bucket=bucketname, CreateBucketConfiguration={'LocationConstraint': 'eu-west-1'})
-        print('\nA new bucket has been created')
+        response = s3.create_bucket(
+            Bucket=bucketname,
+            CreateBucketConfiguration={'LocationConstraint': 'eu-west-1'})
         print(response)
-
-        # Adds Read-Only permissions to an Anonymous User
-        # http://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies.html#example-bucket-policies-use-case-2
-        print('Adding Read-Only Permissions')
         policy = {
             "Version": "2012-10-17",
             "Statement": [
@@ -33,17 +30,11 @@ def create_bucket():
                 }
             ]
         }
-
-        # The bucket policy as a JSON document
-        # http://boto3.readthedocs.io/en/latest/reference/services/s3.html#S3.BucketPolicy.policy
-        # https://stackoverflow.com/questions/7408647/convert-dynamic-python-object-to-json
+        # converting to a json format
         policy = json.dumps(policy)
-
-        # Add Read-Only Permissions to new bucket
-        # http://docs.aws.amazon.com/cli/latest/reference/s3api/put-bucket-policy.html
+        # adding policy to newly created bucket
         boto3.client('s3').put_bucket_policy(Bucket=bucketname, Policy=policy)
-        print('Read-Only Permissions added to ' + bucketname)
-
+        print("Bucket given read permissions")
     except Exception as error:
         print(error)
 

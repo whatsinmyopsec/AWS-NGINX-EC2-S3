@@ -9,16 +9,20 @@ ec2 = boto3.resource('ec2')
 
 
 def add_file():
-    for bucket in s3.buckets.all():
-        print(bucket.name)
-        print("----------------")
-        for item in bucket.objects.all():
-            print("\t%s" % item.key)
+    try:
+
+        for bucket in s3.buckets.all():
+            print(bucket.name)
+            print("----------------")
+            for item in bucket.objects.all():
+                print("\t%s" % item.key)
+
+    except Exception as errors:
+        print(errors)
 
     bucket = input('\nPlease type in the name of the bucket you wish to choose a file from: ')
     file = input('\nPlease type in the name of the file you wish to copy to the Index page: ')
     file_url = "https://s3-eu-west-1.amazonaws.com/" + bucket + "/" + file
-
     # Indentation matters
 
     try:
@@ -28,8 +32,7 @@ def add_file():
             cmd = " 'echo \"<img src=" + file_url + " />\" | sudo tee -a  /usr/share/nginx/html/index.html' "
             index = "ssh -i devops.pem ec2-user@" + instance.public_ip_address + ' ' + cmd
 
-            (status, output) = subprocess.run(index, check=True, shell=True, stdout=subprocess.PIPE,
-                                              stderr=subprocess.PIPE)
+            output = subprocess.run(index, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             print(output)
 
     except Exception as error:

@@ -28,7 +28,7 @@ def create_instance():
             UserData='''#!/bin/bash
                      yum -y update
                      yum -y install python3
-                     yum -y install nginx
+                     amazon-linux-extras install nginx1.12 -y
                      service nginx start
                      chkconfig nginx on
                      touch home/ec2-user/testFile''')
