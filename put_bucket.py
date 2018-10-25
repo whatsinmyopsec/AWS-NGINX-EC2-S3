@@ -14,10 +14,9 @@ def put_bucket():
 
     bucket = input('\nPlease type in the name of the bucket you wish to upload to: ')
 
-    # Loops over files in specified folder and prints to screen
-    # https://stackoverflow.com/questions/11801309/how-to-loop-over-files-with-python
-    source = '/home/vape/PycharmProjects/devops-assign-1/'
-    print('Files in folder: ')
+    #
+    source = os.getcwd()
+    print('Files in folder: \n ')
     for fn in os.listdir(source):
         if os.path.isfile(fn):
             print(fn)
@@ -25,7 +24,7 @@ def put_bucket():
 
     try:
         response = s3.Object(bucket, file).put(Body=open(file, 'rb'))
-        print("\nFile has been uploaded successfully")
+        print('\nFile has been uploaded successfully\n' + response)
 
     except Exception as error:
         print(error)
@@ -33,7 +32,7 @@ def put_bucket():
     # Adding Public Read Only Access
     try:
         object_acl = s3.ObjectAcl(bucket, file).put(ACL='public-read')
-        print('\nAdded Public Read Only Access to ' + file)
+        print('\nAdded Public Read Only Access to ' + file + object_acl)
     except Exception as error:
         print(error)
 

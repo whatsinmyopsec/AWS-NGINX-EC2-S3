@@ -1,10 +1,20 @@
 import subprocess
-import time
 
 import boto3
 
 # Declaring EC2 variable
 ec2 = boto3.resource('ec2')
+
+
+# Function to tell the user when they can do things
+def countdown(n):
+    import time
+    print('This window will remain open for more seconds...')
+    while n >= 0:
+        print(n, end='...')
+        time.sleep(1)
+        n -= 1
+    print('Next step \n')
 
 
 # Creates a new instance
@@ -34,13 +44,13 @@ def create_instance():
                      touch home/ec2-user/testFile''')
 
         print("An EC2 instance with ID", instance[0].id, "has been created.")
-        time.sleep(5)
+        countdown(5)
         instance[0].reload()
         print("Public IP address:", instance[0].public_ip_address)
 
         # Suppress the new host key confirmation prompt and allow SSH remote command execution
         cmd = "ssh -o StrictHostKeyChecking=no -i devops.pem ec2-user@" + instance[0].public_ip_address + " 'pwd'"
-        time.sleep(60)
+        countdown(60)
         output = subprocess.run(cmd, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         print(output)
 
@@ -48,7 +58,8 @@ def create_instance():
         cmd_scp = "scp -i devops.pem check_webserver.py ec2-user@" + instance[0].public_ip_address + ":."
         output = subprocess.run(cmd_scp, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         print(output)
-
+        print('please wait 2 minutes before running the next step')
+        # Sait to let everything get set up
     except Exception as error:
         print(error)
 
