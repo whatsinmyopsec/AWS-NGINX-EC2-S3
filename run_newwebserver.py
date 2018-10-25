@@ -34,7 +34,7 @@ def create_instance():
             InstanceType='t2.micro',
             KeyName='devops',  # replace with your key
             TagSpecifications=tag_spec,
-            SecurityGroupIds=['sg-0d2d781ed4f0610db'],  # replace with your security group
+            SecurityGroupIds=['sg-0d2d781ed4f0610db'],  # replace with your security group id
             # UserData that will be executed on creation of the instance
             UserData='''#!/bin/bash
                      yum -y update
@@ -62,6 +62,7 @@ def create_instance():
         output = subprocess.run(cmd_scp, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         pprint.pprint(output)
         print('please wait 2 minutes before running the next step')
+        countdown(15)
         # Sait to let everything get set up
     except Exception as error:
         print(error)

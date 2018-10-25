@@ -2,6 +2,7 @@
 
 import pprint
 import subprocess
+import webbrowser
 
 import boto3
 
@@ -33,7 +34,7 @@ def add_file():
         print(errors)
 
     bucket = input('\nPlease type in the name of the bucket you wish to choose a file from: ')
-    picture = input('\nPlease type in the name of the file you wish to copy to the Index page: ')
+    picture = input('\nPlease type in the name of the image you uploaded: ')
 
     # Indentation matters // not really
 
@@ -46,25 +47,32 @@ def add_file():
         htmlfile.close()
 
     try:
-        for instance in ec2.instances.all():
-            print(instance.id, instance.state, instance.public_ip_address)
+        instances = ec2.instances.filter(
+            Filters=[{'Name': 'instance-state-name', 'Values': ['running']}])
+        for instance in instances:
+            print("Instance Id: " + instance.id + ", Instance IP Address: " + instance.public_ip_address)
 
             createindex()
             print('index.html has been created')
-            countdown(5)
 
             # Copy index page to server
             cmd_scp = "scp -i devops.pem index.html ec2-user@" + instance.public_ip_address + ":."
+            print('index uploaded')
             countdown(10)
             output = subprocess.run(cmd_scp, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            pprint.pprint(output)
+            print(output)
 
-            # set index page on nginx server
-            cmd = "ssh -i devops.pem ec2-user@" + instance.public_ip_address + \
-                  " 'mv index.html /usr/share/nginx/html '"
+            cmd = "ssh -i devops.pem ec2-user@" + instance.public_ip_address + " 'cd /usr/share/nginx/html; " \
+                                                                               "sudo rm -f index.html; " \
+                                                                               "cd ~; " \
+                                                                               "sudo mv index.html /usr/share/" \
+                                                                               "nginx/html/index.html'"
             countdown(10)
             output = subprocess.run(cmd, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            pprint.pprint(output)
+            print(output)
+
+            print('opening in the best web browser')
+            webbrowser.open_new(instance.public_ip_address)
 
     except Exception as error:
         print(error)
