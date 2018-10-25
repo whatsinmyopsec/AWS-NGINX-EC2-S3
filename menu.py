@@ -10,7 +10,7 @@ def print_menu():
     print("1. Create a New Instance")
     print("2. Check if Nginx is running")
     print("3. Create a New Bucket")
-    print("4. Upload a file to a Bucket")
+    print("4. Upload an image to a Bucket")
     print("5. Add file to Index page")
     print("0. Exit")
     print(46 * "-")
@@ -25,6 +25,7 @@ while loop:
     choice = input("Please select an option: ")
 
     if choice == "1":
+        # So theres no need to chmod anything
         subprocess.call(['python3', 'run_newwebserver.py'])
         print(5 * '\n')
     elif choice == "2":

@@ -1,3 +1,4 @@
+import pprint
 import time
 
 import boto3
@@ -22,11 +23,10 @@ def create_bucket():
             Bucket=bucketname,
             ACL='public-read',
             CreateBucketConfiguration={'LocationConstraint': 'eu-west-1'})
-        print(response)
+        pprint.pprint(response)
 
         # if bucket successfully created then print message for user
         print("creating bucket successful")
-        print(response)
     except Exception as error:
         print(error)
 

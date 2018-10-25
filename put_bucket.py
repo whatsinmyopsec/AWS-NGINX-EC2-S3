@@ -1,4 +1,5 @@
 import os
+import pprint
 
 import boto3
 
@@ -20,19 +21,19 @@ def put_bucket():
     for fn in os.listdir(source):
         if os.path.isfile(fn):
             print(fn)
-    file = input('\nPlease type in the file you wish to upload to ' + bucket + ': ')
+    image = input('\nPlease type in the image you wish to upload to ' + bucket + ': ')
 
     try:
-        response = s3.Object(bucket, file).put(Body=open(file, 'rb'))
-        print('\nFile has been uploaded successfully\n' + response)
+        response = s3.Object(bucket, image).put(Body=open(image, 'rb'), ContentType='i')
+        pprint.pprint('\nFile has been uploaded successfully\n' + response)
 
     except Exception as error:
         print(error)
 
     # Adding Public Read Only Access
     try:
-        object_acl = s3.ObjectAcl(bucket, file).put(ACL='public-read')
-        print('\nAdded Public Read Only Access to ' + file + object_acl)
+        object_acl = s3.ObjectAcl(bucket, image).put(ACL='public-read')
+        print('\nAdded Public Read Only Access to ' + image + object_acl)
     except Exception as error:
         print(error)
 

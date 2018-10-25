@@ -1,3 +1,4 @@
+import pprint
 import subprocess
 
 import boto3
@@ -13,7 +14,7 @@ try:
         cmd = "ssh -i devops.pem ec2-user@" + instance.public_ip_address + " 'python3 check_webserver.py'"
 
         output = subprocess.run(cmd, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print(output)
+        pprint.pprint(output)
 
 except Exception as error:
     print(error)

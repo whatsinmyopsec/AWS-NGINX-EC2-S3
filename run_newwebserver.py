@@ -1,3 +1,4 @@
+import pprint
 import subprocess
 
 import boto3
@@ -9,7 +10,7 @@ ec2 = boto3.resource('ec2')
 # Function to tell the user when they can do things
 def countdown(n):
     import time
-    print('This window will remain open for more seconds...')
+    pprint.pprint('This will now go for more seconds...')
     while n >= 0:
         print(n, end='...')
         time.sleep(1)
@@ -50,14 +51,16 @@ def create_instance():
 
         # Suppress the new host key confirmation prompt and allow SSH remote command execution
         cmd = "ssh -o StrictHostKeyChecking=no -i devops.pem ec2-user@" + instance[0].public_ip_address + " 'pwd'"
+
+        # Changed this to 20 one time and it was all broken
         countdown(60)
         output = subprocess.run(cmd, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print(output)
+        pprint.pprint(output)
 
         # SCP the check_webserver.py file to the instance
         cmd_scp = "scp -i devops.pem check_webserver.py ec2-user@" + instance[0].public_ip_address + ":."
         output = subprocess.run(cmd_scp, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print(output)
+        pprint.pprint(output)
         print('please wait 2 minutes before running the next step')
         # Sait to let everything get set up
     except Exception as error:
