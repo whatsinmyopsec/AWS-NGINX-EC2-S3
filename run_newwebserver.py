@@ -40,8 +40,6 @@ def create_instance():
         if os.path.isfile(fn):
             print(fn)
     key = input('\nPlease type in the key you would like to use: ')
-    # sg-0d2d781ed4f0610db
-    sgid = input('\nPlease type in the security group id you would prefer to use: ')
     tags = [{'Key': 'Name', 'Value': instancename}]
     tag_spec = [{'ResourceType': 'instance', 'Tags': tags}]
 
@@ -52,9 +50,9 @@ def create_instance():
             MinCount=1,
             MaxCount=1,
             InstanceType='t2.micro',
-            KeyName=key,  # replace with your key
+            KeyName=key,
             TagSpecifications=tag_spec,
-            SecurityGroupIds=sgid,  # replace with your security group id
+            SecurityGroupIds=['sg-0d2d781ed4f0610db'],  # replace with your security group id
             # UserData that will be executed on creation of the instance
             UserData='''#!/bin/bash
                      yum -y update

@@ -41,8 +41,9 @@ def add_file():
     def createindex():
         htmlfile = open("index.html", "w+")
 
-        htmlfile.write('<img src="https://s3-eu-west-1.amazonaws.com/' + bucket + '/' + picture + '"/>')
-
+        htmlfile.write('<img src="https://s3-eu-west-1.amazonaws.com/' + bucket + '/' + picture + '"/>' + '<br />'
+                                                                                                          '<a href = "https://s3-eu-west-1.amazonaws.com/' + bucket + '/' + picture + '">' +
+                       'Link to image' + '</a>')
         htmlfile.close()
 
     try:
