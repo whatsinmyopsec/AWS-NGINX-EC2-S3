@@ -1,7 +1,9 @@
 import pprint
 import subprocess
+import time
 
 import boto3
+from tqdm import tqdm
 
 # Declaring EC2 variable
 ec2 = boto3.resource('ec2')
@@ -9,13 +11,21 @@ ec2 = boto3.resource('ec2')
 
 # Function to tell the user when they can do things
 def countdown(n):
-    import time
     pprint.pprint('This will now go for more seconds...')
     while n >= 0:
         print(n, end='...')
         time.sleep(1)
         n -= 1
     print('Next step \n')
+
+
+# This for extra stuff because i don't like the look of countdown
+def progress(m):
+    pbar = tqdm(total=m)
+    for i in range(m):
+        time.sleep(1)
+        pbar.update(1)
+    pbar.close()
 
 
 # Creates a new instance
@@ -45,15 +55,18 @@ def create_instance():
                      touch home/ec2-user/testFile''')
 
         print("An EC2 instance with ID", instance[0].id, "has been created.")
-        countdown(5)
+
+        progress(10)
+
         instance[0].reload()
         print("Public IP address:", instance[0].public_ip_address)
 
         # Suppress the new host key confirmation prompt and allow SSH remote command execution
         cmd = "ssh -o StrictHostKeyChecking=no -i devops.pem ec2-user@" + instance[0].public_ip_address + " 'pwd'"
+        print('ssh set up')
 
         # Changed this to 20 one time and it was all broken
-        countdown(60)
+        progress(60)
         output = subprocess.run(cmd, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         pprint.pprint(output)
 
@@ -62,8 +75,11 @@ def create_instance():
         output = subprocess.run(cmd_scp, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         pprint.pprint(output)
         print('please wait 2 minutes before running the next step')
-        countdown(15)
-        # Sait to let everything get set up
+
+        progress(15)
+
+        # countdown(15)
+        # Wait to let everything get set up
     except Exception as error:
         print(error)
 
