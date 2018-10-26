@@ -15,7 +15,7 @@ def put_bucket():
 
     bucket = input('\nPlease type in the name of the bucket you wish to upload to: ')
 
-    #
+    # List files in current directory
     source = os.getcwd()
     print('Files in folder: \n ')
     for fn in os.listdir(source):

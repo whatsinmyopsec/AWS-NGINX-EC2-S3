@@ -1,24 +1,23 @@
 #!/usr/bin/env python3
 
-import pprint
 import subprocess
+import time
 import webbrowser
 
 import boto3
+from tqdm import tqdm
 
 s3 = boto3.resource('s3')
 ec2 = boto3.resource('ec2')
 
 
 # This is to make sure nothing breaks really
-def countdown(n):
-    import time
-    pprint.pprint('This will now go for more seconds...')
-    while n >= 0:
-        print(n, end='...')
+def progress(m):
+    pbar = tqdm(total=m)
+    for i in range(m):
         time.sleep(1)
-        n -= 1
-    print('Next step \n')
+        pbar.update(1)
+    pbar.close()
 
 
 def add_file():
@@ -27,7 +26,7 @@ def add_file():
         for bucket in s3.buckets.all():
             print(bucket.name)
             print("----------------")
-            for item in bucket.objects.all():
+            for item in bucket.objects.filter():
                 print("\t%s" % item.key)
 
     except Exception as errors:
@@ -57,8 +56,10 @@ def add_file():
 
             # Copy index page to server
             cmd_scp = "scp -i devops.pem index.html ec2-user@" + instance.public_ip_address + ":."
-            print('index uploaded')
-            countdown(10)
+            print(10 * '-', 'index uploaded', 10 * '-', '/n')
+
+            progress(10)
+
             output = subprocess.run(cmd_scp, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             print(output)
 
@@ -67,11 +68,12 @@ def add_file():
                                                                                "cd ~; " \
                                                                                "sudo mv index.html /usr/share/" \
                                                                                "nginx/html/index.html'"
-            countdown(10)
+            progress(10)
+
             output = subprocess.run(cmd, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             print(output)
 
-            print('opening in the best web browser')
+            print(5 * '-', 'opening in the best web browser', 5 * '-', '/n')
             webbrowser.open_new(instance.public_ip_address)
 
     except Exception as error:
