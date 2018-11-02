@@ -26,19 +26,19 @@ while loop:
 
     if choice == "1":
         # So theres no need to chmod anything
-        subprocess.call(['python3', 'run_newwebserver.py'])
+        subprocess.check_call(['python3', 'run_newwebserver.py'])
         print(5 * '\n')
     elif choice == "2":
-        subprocess.call(['python3', 'list_instances.py'])
+        subprocess.check_call(['python3', 'list_instances.py'])
         print(5 * '\n')
     elif choice == "3":
-        subprocess.call(['python3', 'create_bucket.py'])
+        subprocess.check_call(['python3', 'create_bucket.py'])
         print(5 * '\n')
     elif choice == "4":
-        subprocess.call(['python3', 'put_bucket.py'])
+        subprocess.check_call(['python3', 'put_bucket.py'])
         print(5 * '\n')
     elif choice == "5":
-        subprocess.call(['python3', 'add_file.py'])
+        subprocess.check_call(['python3', 'add_file.py'])
         print(5 * '\n')
     elif choice == "0":
         # loop set to False, exits menu
