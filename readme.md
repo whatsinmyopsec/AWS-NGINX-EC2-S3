@@ -1,6 +1,6 @@
 # Devops-Assign-1
 
-This is a project that uses Python 3 and the Boto library to start Amazon Web Services(AWS) (EC2)instances and (S3)buckets. 
+This is a project that uses Python3 and the Boto library to start Amazon Web Services(AWS) (EC2)instances and (S3)buckets. 
 There are also scripts that start services like Nginx servers on remote instances.
 
 ## Pre-requisites
